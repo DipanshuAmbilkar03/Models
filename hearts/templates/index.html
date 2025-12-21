@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            width: 400px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        input, button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        h2 {
+            text-align: center;
+        }
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Heart Disease Predictor</h2>
+
+    <form id="predictForm">
+
+        <input name="Age" type="number" placeholder="Age" required>
+        <input name="RestingBP" type="number" placeholder="Resting BP" required>
+        <input name="Cholesterol" type="number" placeholder="Cholesterol" required>
+        <input name="MaxHR" type="number" placeholder="Max Heart Rate" required>
+        <input name="Oldpeak" type="number" step="0.1" placeholder="Oldpeak" required>
+      
+        <select name="FastingBS">
+          <option value="1">Fasting BS > 120</option>
+          <option value="0">Normal</option>
+        </select>
+      
+        <select name="Sex">
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+      
+        <select name="ChestPainType">
+          <option value="ATA">ATA</option>
+          <option value="NAP">NAP</option>
+          <option value="TA">TA</option>
+          <option value="ASY">ASY</option>
+        </select>
+      
+        <select name="RestingECG">
+          <option value="Normal">Normal</option>
+          <option value="ST">ST</option>
+          <option value="LVH">LVH</option>
+        </select>
+      
+        <select name="ExerciseAngina">
+          <option value="Y">Yes</option>
+          <option value="N">No</option>
+        </select>
+      
+        <select name="ST_Slope">
+          <option value="Up">Up</option>
+          <option value="Flat">Flat</option>
+          <option value="Down">Down</option>
+        </select>
+      
+        <button type="submit">Predict</button>
+      </form>
+      
+
+    <div id="result"></div>
+</div>
+
+<script>
+document.getElementById("predictForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+    document.getElementById("result").innerText =
+        data.result || data.error;
+});
+</script>
+
+</body>
+</html>
